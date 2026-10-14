@@ -8,94 +8,150 @@ import java.util.List;
 import in.co.rays.proj4.bean.RoleBean;
 import in.co.rays.proj4.model.RoleModel;
 
-//1 = admin
-//2 = student
-//3 = faculty
-//4 = college
-//5 = KIOSK
 public class TestRoleModel {
 
-	public static RoleModel model = new RoleModel();
+    public static RoleModel model = new RoleModel();
 
-	public static void main(String[] args) {
-		testAdd();
-//		testUpdate();
-//		testDelete();
-//		testFindByPk();
-//		testSearch();
-	}
+    public static void main(String[] args) {
 
-	private static void testAdd() {
-		RoleBean bean = new RoleBean();
+        // testAdd();
+        // testUpdate();
+        // testDelete();
+        // testFindByPk();
+        // testSearch();
+        // testNextPK();
+        // testFindByUniqueColumn();
+        testFindByName();
+    }
 
-		bean.setName("Admin");
-		bean.setDescription("Admin role");
-		bean.setCreatedBy("root");
-		bean.setModifiedBy("root");
-		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
-		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
+    // Test Add
+    private static void testAdd() {
 
-		model.add(bean);
+        RoleBean bean = new RoleBean();
 
-	}
+        bean.setName("Manager");
+        bean.setDescription("Manager Role");
 
-	private static void testUpdate() {
+        bean.setCreatedBy("admin");
+        bean.setModifiedBy("admin");
 
-		RoleBean bean = new RoleBean();
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        bean.setCreatedDatetime(timestamp);
+        bean.setModifiedDatetime(timestamp);
 
-		bean.setId(1);
-		bean.setName("admin");
-		bean.setDescription("admin role");
-		bean.setCreatedBy("root");
-		bean.setModifiedBy("root");
-		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
-		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
+        long pk = model.add(bean);
 
-		model.update(bean);
+        System.out.println("Role Added Successfully");
+        System.out.println("ID: " + pk);
+    }
 
-	}
+    // Test Update
+    private static void testUpdate() {
 
-	private static void testDelete() {
+        RoleBean bean = new RoleBean();
 
-		model.delete(1);
+        bean.setId(1);
+        bean.setName("Manager Updated");
+        bean.setDescription("Updated Manager Role");
 
-	}
+        bean.setCreatedBy("admin");
+        bean.setModifiedBy("admin");
 
-	private static void testFindByPk() {
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        bean.setCreatedDatetime(timestamp);
+        bean.setModifiedDatetime(timestamp);
 
-		RoleBean bean = model.findByPk(1);
+        model.update(bean);
 
-		System.out.println(bean.getName());
-		System.out.println(bean.getDescription());
-		System.out.println(bean.getCreatedBy());
-		System.out.println(bean.getModifiedBy());
-		System.out.println(bean.getCreatedDatetime());
-		System.out.println(bean.getModifiedDatetime());
+        System.out.println("Role Updated Successfully");
+    }
 
-	}
+    // Test Delete
+    private static void testDelete() {
 
-	private static void testSearch() {
+        model.delete(1);
 
-		RoleBean bean = new RoleBean();
+        System.out.println("Role Deleted Successfully");
+    }
 
-//		bean.setName("student");
+    // Test Find By Primary Key
+    private static void testFindByPk() {
 
-		List<RoleBean> list = model.search(bean, 1, 5);
+        RoleBean bean = model.findByPk(1);
 
-		Iterator<RoleBean> it = list.iterator();
+        if (bean != null) {
+            System.out.println("ID: " + bean.getId());
+            System.out.println("Name: " + bean.getName());
+            System.out.println("Description: " + bean.getDescription());
+            System.out.println("Created By: " + bean.getCreatedBy());
+            System.out.println("Modified By: " + bean.getModifiedBy());
+            System.out.println("Created Datetime: " + bean.getCreatedDatetime());
+            System.out.println("Modified Datetime: " + bean.getModifiedDatetime());
+        } else {
+            System.out.println("Role Not Found");
+        }
+    }
 
-		while (it.hasNext()) {
-			bean = it.next();
-			System.out.println(bean.getId());
-			System.out.println(bean.getName());
-			System.out.println(bean.getDescription());
-			System.out.println(bean.getCreatedBy());
-			System.out.println(bean.getModifiedBy());
-			System.out.println(bean.getCreatedDatetime());
-			System.out.println(bean.getModifiedDatetime());
-			System.out.println("--------------------");
-		}
+    // Test Search
+    private static void testSearch() {
 
-	}
+        RoleBean bean = new RoleBean();
 
+        // Search by name
+        bean.setName("Manager");
+
+        // You can also search by description
+        // bean.setDescription("Manager");
+
+        List<RoleBean> list = model.search(bean, 1, 10);
+
+        Iterator<RoleBean> it = list.iterator();
+
+        while (it.hasNext()) {
+
+            RoleBean role = it.next();
+
+            System.out.println("ID: " + role.getId());
+            System.out.println("Name: " + role.getName());
+            System.out.println("Description: " + role.getDescription());
+            System.out.println("-----------------------------");
+        }
+    }
+
+    // Test Next Primary Key
+    private static void testNextPK() {
+
+        long pk = model.nextPK();
+
+        System.out.println("Next Primary Key: " + pk);
+    }
+
+    // Test Find By Unique Column
+    private static void testFindByUniqueColumn() {
+
+        RoleBean bean =
+                model.findByUniqueColumn("name", "Manager");
+
+        if (bean != null) {
+            System.out.println("ID: " + bean.getId());
+            System.out.println("Name: " + bean.getName());
+            System.out.println("Description: " + bean.getDescription());
+        } else {
+            System.out.println("Role Not Found");
+        }
+    }
+
+    // Test Find By Name
+    private static void testFindByName() {
+
+        RoleBean bean = model.findByName("Manager");
+
+        if (bean != null) {
+            System.out.println("ID: " + bean.getId());
+            System.out.println("Name: " + bean.getName());
+            System.out.println("Description: " + bean.getDescription());
+        } else {
+            System.out.println("Role Not Found");
+        }
+    }
 }
